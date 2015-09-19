@@ -1,5 +1,5 @@
 ///////////////////////
-// formBuilder() version 1.0
+// formBuilder() version 1.1
 //////////////////////
 var formBuilder = {
 	helpers: {
@@ -9,6 +9,8 @@ var formBuilder = {
 			var lang;
 			if (path === "/") {
 				lang = defaultLang;
+			} else if (path.indexOf('/_temp/') > -1) {
+				lang = path.substr(7, 2);
 			} else {
 				lang = path.substr(1, 2);
 			}
