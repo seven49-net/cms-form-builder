@@ -1,5 +1,5 @@
 ///////////////////////
-// formBuilder() version 1.1
+// formBuilder() version 1.1.5
 //////////////////////
 var formBuilder = {
 	helpers: {
@@ -55,7 +55,15 @@ var formBuilder = {
 						obj.append($(this).attr('id'), $(this)[0].files[0]);
 					}
 				} else if ($(this).attr('type') === "radio") {
-					obj.append($(this).attr("name") + '_' + $(this).val(), $(this)[0].checked);
+					if ($(this)[0].checked === true) {
+						obj.append($(this).attr("name") + '-' + $(this).val(), $(this)[0].checked);
+					}
+
+				} else if ($(this).attr('type') === 'checkbox'){
+					if ($(this)[0].checked === true) {
+						obj.append($(this).attr("name") + '-' + $(this).val(), $(this)[0].checked);
+					}
+
 				} else {
 					obj.append($(this).attr('name'), $(this).val());
 				}
