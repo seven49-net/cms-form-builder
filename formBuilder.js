@@ -1,5 +1,5 @@
 ///////////////////////
-// formBuilder() version 1.1.5
+// formBuilder() version 1.2
 //////////////////////
 var formBuilder = {
 	helpers: {
@@ -84,9 +84,10 @@ var formBuilder = {
 			mailFrom: "noreply@seven49.net", // leave it for SPAM filtering
 			mailSubject: "Kontaktformular",
 			validation: true, // default
-			formName: ".aspnetForm",
-			formContent: "#aspnetForm",
+			formName: ".feedback-form",
+			formContent: ".feedback-form .ContentItem",
 			sendCCToSender: false,
+			customCCText: '',
 			redirectOnSuccess: $('input[name=MailThanks]').val(), // if undefined or '' the alternateSuccessMessage will be displayed in formContent
 			errorMessage: "Some errors ocurred while transmitting the form! Please refresh the page and try again!",
 			alternateSuccessMessage: "This form was successfully sent!",
@@ -120,6 +121,7 @@ var formBuilder = {
 						formName: options.formName,
 						redirectOnSuccess: options.redirectOnSuccess,
 						sendCCToSender: options.sendCCToSender,
+						customCCText: options.customCCText,
 						errorMessage: options.errorMessage,
 						alternateSuccessMessage: options.alternateSuccessMessage,
 						loader: options.loader
@@ -135,6 +137,7 @@ var formBuilder = {
 					mailFrom: options.mailFrom,
 					mailSubject: options.mailSubject,
 					sendCCToSender: options.sendCCToSender,
+					customCCText: options.customCCText,
 					formName: options.formName,
 					errorMessage: options.errorMessage,
 					redirectOnSuccess: options.redirectOnSuccess,
@@ -147,15 +150,16 @@ var formBuilder = {
 	},
 	processForm: function(params) {
 		var options = $.extend({
-			formContent: "#aspnetForm",
+			formContent: ".feedback-form .ContentItem",
 			apiUrl: "http://cmsapi.seven49.net/FormMail/",
 			mailTo: "info@seven49.net",
 			replyTo: $('input[name=Email]').val(),
 			mailFrom: "noreply@seven49.net",
 			mailSubject: "Kontaktformular",
-			formName: ".aspnetForm",
+			formName: ".feedback-form",
 			redirectOnSuccess: '',
 			sendCCToSender: false,
+			customCCText: '',
 			errorMessage: "Some errors ocurred while transmitting the form! Please refresh the page and try again!",
 			alternateSuccessMessage: "This form was successfully sent!",
 			loader: "<img class='send-form' src='http://cdn.seven49.net/common/images/loading/ajax-loader-2.gif' alt='sending form' />"
@@ -180,12 +184,13 @@ var formBuilder = {
 				"MailBody": formContent.join("") + "<br/>" + "Wichtig:" + "Der Kunde hat das Formular mit einem veralteten Browser abgeschickt - bei diesen steht der Dokumenten-Upload nicht zur Verfügung. Bitte fordern Sie diese, falls nötig,  per E-Mail vom Kunden an."
 			}, function(){
 				if (options.sendCCToSender) {
+
 					$.post(options.apiUrl, {
 						"MailFrom": options.mailFrom,
 						"MailTo": options.replyTo,
 						"ReplyTo": options.mailTo,
 						"MailSubject": options.mailSubject,
-						"MailBody": formContent.join("")
+						"MailBody": options.customCCText + formContent.join("")
 					});
 				}
 
@@ -221,7 +226,7 @@ var formBuilder = {
 								"MailTo": options.replyTo,
 								"ReplyTo": options.mailTo,
 								"MailSubject": options.mailSubject,
-								"MailBody": customerForm.join("")
+								"MailBody":options.customCCText + customerForm.join("")
 							});
 						}
 						if (formBuilder.helpers.isReallyEmpty(options.redirectOnSuccess)) {
