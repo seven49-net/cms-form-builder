@@ -1,5 +1,5 @@
 ///////////////////////
-// formBuilder() version 1.2
+// formBuilder() version 1.3
 //////////////////////
 var formBuilder = {
 	helpers: {
@@ -164,7 +164,7 @@ var formBuilder = {
 			alternateSuccessMessage: "This form was successfully sent!",
 			loader: "<img class='send-form' src='http://cdn.seven49.net/common/images/loading/ajax-loader-2.gif' alt='sending form' />"
 		}, params);
-		var redirectUrl;
+
 		var loader = "<div class='loader' id='form-process-indicator'>" + options.loader + "</div>";
 		$(options.formContent).append(loader);
 
@@ -232,7 +232,7 @@ var formBuilder = {
 						if (formBuilder.helpers.isReallyEmpty(options.redirectOnSuccess)) {
 							$(options.formContent).html("<div class='success-message'>"+options.alternateSuccessMessage+"</div>");
 						} else {
-							window.location.href = redirectUrl;
+							window.location.href = options.redirectOnSuccess;
 						}
 
 
